@@ -23,9 +23,11 @@ contract ThoritosToken is ERC20, Ownable {
         _burn(msg.sender, amount);
     }
 
-    function lockTokens(address account, uint256 time) public onlyOwner {
+    function lockTokens(uint256 amount, uint256 time) public {
         require(time > block.timestamp, "Lock time must be in the future");
-        _lockedUntil[account] = time;
+        require(balanceOf(msg.sender) >= amount, "Insufficient balance to lock tokens");
+        
+        _lockedUntil[msg.sender] = time;
     }
 
     function getLockedUntil(address account) public view returns (uint256) {
